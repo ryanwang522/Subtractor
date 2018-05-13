@@ -88,9 +88,10 @@ def buildModel(train_x, train_y):
     print(train_y_num.shape)
     print(train_y_sign.shape)
     
+    filepath = "../model/model-num-ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5'"
     modelOfNums = Sequential()
-    modelOfNums.add(layers.Dense(250 , input_shape=(84,), activation='relu'))
-    modelOfNums.add(layers.Dense(250, activation='relu'))
+    modelOfNums.add(layers.Dense(256 , input_shape=(84,), activation='relu'))
+    modelOfNums.add(layers.Dense(200, activation='relu'))
     modelOfNums.add(layers.Dense(150, activation='relu'))
     modelOfNums.add(layers.Dense(100, activation='relu'))
     modelOfNums.add(layers.Dense(4*10, activation='sigmoid'))
@@ -99,12 +100,11 @@ def buildModel(train_x, train_y):
                     batch_size=BATCH_SIZE,
                     validation_split=0.2, 
                     shuffle=True, verbose=1, epochs=100)
+
     
     modelOfSign = Sequential()
-    modelOfSign.add(layers.Dense(250 , input_shape=(84,), activation='relu'))
-    modelOfSign.add(layers.Dense(250, activation='relu'))
-    modelOfSign.add(layers.Dense(150, activation='relu'))
-    modelOfSign.add(layers.Dense(50, activation='relu'))
+    modelOfSign.add(layers.Dense(256 , input_shape=(84,), activation='relu'))
+    modelOfSign.add(layers.Dense(64, activation='relu')) 
     modelOfSign.add(layers.Dense(2, activation='sigmoid'))
     modelOfSign.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy']) 
     modelOfSign.fit(train_x, train_y_sign,
@@ -170,17 +170,21 @@ def main():
     ((train_x, train_y), (test_x, test_y)) = splitData(x, y)
  
     if not args.retrain:
-        # Use the best model so far
+        # Use the best model trained on jupyter so far
         modelDir = "../model/"
-        modelOfNums = load_model(modelDir + "nums_model")
-        modelOfSign = load_model(modelDir + "sign_model")
         
-        validation(modelOfNums, modelOfSign, test_x, test_y, ctable)
+        # modelOfNums = load_model(modelDir + "nums_model")
+        # modelOfSign = load_model(modelDir + "sign_model")
+        # validation(modelOfNums, modelOfSign, test_x, test_y, ctable)
+
+        modelOfNumsRev = load_model(modelDir + "nums_model_revised")
+        modelOfSignRev = load_model(modelDir + "sign_model_revised")
+        validation(modelOfNumsRev, modelOfSignRev, test_x, test_y, ctable)
+
     else:
         # retrain the model by training data and output the accuracy result
         modelOfNums, modelOfSign = buildModel(train_x, train_y)
         validation(modelOfNums, modelOfSign, test_x, test_y, ctable)
-        
 
 if __name__ == "__main__":
     main()
