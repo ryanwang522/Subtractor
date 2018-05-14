@@ -2,7 +2,7 @@
   * This is homework3 for DSAI, it can support **3-digits addition and subtraction**
 # Idea
   * I've modified the TA's example RNN model to support subtraction, but the accuracy is at about 7X %. 
-  * So I do some little change on the encodeing of the data and build a model which consist of several fully-connected layers (Dense layers).
+  * So I do some little change on the encodeing of the data and build a model which consist of several fully-connected layers (Dense layers).
   * I seperate input expression into sign and numeric, and further train them indvidually.
   * See more details in `Subtractor.ipynb`
   
