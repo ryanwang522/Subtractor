@@ -10,7 +10,7 @@
   * Use exist model to perform addition/subtraction. 
     - `$ python3 main.py`
   * Retrain the model by random data
-    - `$ python3 main.py --retrain=True`
+    - `$ python3 main.py --retrain=True`
 
 # Requiements
   * `pip install -r requirements.txt`
